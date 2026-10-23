@@ -1,0 +1,10 @@
+[Unit]
+Description=Sync GRUB theme (wallpaper + matugen colors) with Dux Shell
+After=graphical-session.target
+
+[Service]
+Type=oneshot
+# Let Dux Shell finish writing all matugen outputs before rendering.
+ExecStartPre=/usr/bin/sleep 2
+ExecStart=%h/.local/share/dux-grub/scripts/dux-grub-sync.sh
+Nice=10

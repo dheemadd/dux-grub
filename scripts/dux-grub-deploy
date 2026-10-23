@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# dux-grub-deploy — root helper (installed root-owned to /usr/local/libexec).
+# Copies the rendered theme from the invoking user's staging directory into the
+# GRUB theme dir. Only regular files with whitelisted extensions are copied.
+set -euo pipefail
+[ "$(id -u)" -eq 0 ] || { echo "must run as root" >&2; exit 1; }
+[ -n "${SUDO_USER:-}" ] || { echo "run via sudo" >&2; exit 1; }
+USER_HOME=$(getent passwd "$SUDO_USER" | cut -d: -f6)
+SRC="$USER_HOME/.local/share/dux-grub/theme"
+DST="/boot/grub2/themes/dux-grub"
+[ -d "$SRC" ] && [ ! -L "$SRC" ] || { echo "staging dir $SRC missing" >&2; exit 1; }
+install -d -m 0755 "$DST" "$DST/icons"
+copy_dir() { # $1=src dir, $2=dst dir
+    local f
+    for f in "$1"/*; do
+        [ -f "$f" ] && [ ! -L "$f" ] || continue
+        case "$f" in *.png|*.txt|*.pf2) install -m 0644 -o root -g root "$f" "$2/" ;; esac
+    done
+}
+copy_dir "$SRC" "$DST"
+[ -d "$SRC/icons" ] && [ ! -L "$SRC/icons" ] && copy_dir "$SRC/icons" "$DST/icons"
+echo "Deployed theme to $DST"

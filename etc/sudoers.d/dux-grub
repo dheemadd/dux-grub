@@ -1,0 +1,9 @@
+# /etc/sudoers.d/dux-grub — passwordless sudo for dux-grub-sync ONLY.
+# Replace %USERNAME% with your login name, then install with:
+#   sudo install -m 0440 -o root -g root etc/sudoers.d/dux-grub /etc/sudoers.d/dux-grub
+#   sudo visudo -cf /etc/sudoers.d/dux-grub
+#
+# The deploy helper is root-owned and only copies *.png/*.txt/*.pf2 from the
+# user's staging dir into /boot/grub2/themes/dux-grub (no arbitrary cp).
+%USERNAME% ALL=(root) NOPASSWD: /usr/local/libexec/dux-grub-deploy
+%USERNAME% ALL=(root) NOPASSWD: /usr/sbin/grub2-mkconfig -o /boot/grub2/grub.cfg

@@ -1,0 +1,6 @@
+# Dropped into ~/.config/matugen/dms/configs/ by install.sh.
+# Dux Shell appends every *.toml in that directory to its matugen config,
+# so this template is rendered on every wallpaper/theme change.
+[templates.duxgrub]
+input_path = '@SHARE_DIR@/matugen/dux-grub-colors.conf'
+output_path = '@HOME@/.config/matugen/dux-grub/colors.conf'

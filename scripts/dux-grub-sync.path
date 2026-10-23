@@ -1,0 +1,12 @@
+[Unit]
+Description=Watch Dux Shell matugen output for wallpaper/theme changes
+
+[Path]
+# Rendered by Dux Shell's matugen pass from our template on every wallpaper change.
+PathChanged=%h/.config/matugen/dux-grub/colors.conf
+# Dux Shell's own colour cache (fallback trigger, also rewritten per wallpaper).
+PathChanged=%h/.cache/dms/dms-colors.json
+Unit=dux-grub-sync.service
+
+[Install]
+WantedBy=default.target
